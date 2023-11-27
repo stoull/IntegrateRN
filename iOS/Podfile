@@ -1,0 +1,40 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+
+
+target 'IntegrateRNiOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for IntegrateRNiOS
+
+  target 'IntegrateRNiOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+
+    require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
+    require_relative '../node_modules/react-native/scripts/react_native_pods'
+    require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+    platform :ios, '13.0'
+    inhibit_all_warnings!
+    # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
+
+    end
+
+    use_expo_modules!
+    post_integrate do |installer|
+      begin
+        expo_patch_react_imports!(installer)
+      rescue => e
+        Pod::UI.warn e
+      end
+  end
+
+  config = use_native_modules!
+
+  target 'IntegrateRNiOSUITests' do
+    # Pods for testing
+  end
+
+end
